@@ -36,10 +36,11 @@ namespace FileDirectorySystemWatcher
           s.WhenStarted(tc => tc.Start());
           s.WhenStopped(tc => tc.Stop());
         });
-        x.RunAsLocalSystem();
         x.SetDescription("Filesystemwatcher som lyssnar på update-händelse");
         x.SetDisplayName("FileDirectoryWatcher");
         x.SetServiceName("FileSystemWatcher");
+        x.RunAsLocalSystem();
+        x.StartAutomatically();
       });
 
       var exitCode = (int)Convert.ChangeType(rc, rc.GetTypeCode());

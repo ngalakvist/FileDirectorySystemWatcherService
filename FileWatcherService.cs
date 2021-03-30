@@ -32,6 +32,7 @@ namespace FileDirectorySystemWatcher
   /// <summary>
   /// https://jira.mdh.se/browse/DAGLIGDRIFT-173
   /// FileWatcher Service with TopShelf and log4net
+
   /// </summary>
   ///
   public class FileWatcherService
