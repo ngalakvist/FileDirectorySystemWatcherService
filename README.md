@@ -6,4 +6,4 @@ FileWatcher service with Topshelf
  Go the bin-> Release Directory on the command prompt  and 
  Type   FileDirectorySystemWatcher.exe install   
  This will install the program as windows service.
- Add files to the directory or folders you are watching the log files.
+ Add files to the directory or folders you are watching and check the logs.
