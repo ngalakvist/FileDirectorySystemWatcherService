@@ -6,7 +6,7 @@ FileWatcher service with Topshelf
  Open the command prompt
  
  Go the bin-> Release Directory on the command prompt  and 
- Type   FileDirectorySystemWatcher.exe install   
+ Type     FileDirectorySystemWatcher.exe install   
  
  This will install the program as windows service.
  
