@@ -35,12 +35,28 @@ namespace FileDirectorySystemWatcher
           s.ConstructUsing(name => new FileWatcherService());
           s.WhenStarted(tc => tc.Start());
           s.WhenStopped(tc => tc.Stop());
+          s.WhenShutdown(service => service.Stop());
         });
         x.SetDescription("Filesystemwatcher som lyssnar på update-händelse");
         x.SetDisplayName("FileDirectoryWatcher");
         x.SetServiceName("FileSystemWatcher");
+        x.EnableShutdown();
         x.RunAsLocalSystem();
         x.StartAutomatically();
+        x.EnableServiceRecovery(recov =>
+        {
+          recov.OnCrashOnly();
+          // Startar om tjänsten efter 1 min.
+          recov.RestartService(1);
+          // Startar om tjänsten efter 2 min.
+          recov.RestartService(2);
+          // Startar om tjänsten efter 5 min.
+          recov.RestartService(5);
+          // Startar om tjänsten efter 10 min.
+          recov.RestartService(10);
+          // Återställer perioden efter en dag.
+          recov.SetResetPeriod(1);
+        });
       });
 
       var exitCode = (int)Convert.ChangeType(rc, rc.GetTypeCode());

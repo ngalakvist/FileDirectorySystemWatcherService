@@ -23,12 +23,11 @@ using SE.MDH.Logging;
 using System;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace FileDirectorySystemWatcher
 {
-
-
   /// <summary>
   /// https://jira.mdh.se/browse/DAGLIGDRIFT-173
   /// FileWatcher Service with TopShelf and log4net
@@ -94,7 +93,7 @@ namespace FileDirectorySystemWatcher
     {
       if (e.ChangeType != WatcherChangeTypes.Changed)
       {
-        DirectoryCopy(SourceFolder, DestinationFolder, true);
+        DirectoryCopy(SourceFolder, DestinationFolder, false);
       }
       log.Info($"Changed: {e.FullPath}");
     }
@@ -112,6 +111,7 @@ namespace FileDirectorySystemWatcher
     private static void OnRenamed(object sender, RenamedEventArgs e)
     {
       log.Info($"Renamed:");
+      DirectoryCopy(SourceFolder, DestinationFolder, true);
       log.Info($"    Old: {e.OldFullPath}");
       log.Info($"    New: {e.FullPath}");
     }
@@ -161,21 +161,12 @@ namespace FileDirectorySystemWatcher
 
       // Get the files in the directory and copy them to the new location.
       FileInfo[] files = dir.GetFiles();
-      foreach (FileInfo file in files)
-      {
-        string tempPath = Path.Combine(destDirName, file.Name);
-        file.CopyTo(tempPath, true);
-      }
 
-      // If copying subdirectories, copy them and their contents to new location.
-      if (copySubDirs)
-      {
-        foreach (DirectoryInfo subdir in dirs)
-        {
-          string tempPath = Path.Combine(destDirName, subdir.Name);
-          DirectoryCopy(subdir.FullName, tempPath, copySubDirs);
-        }
-      }
+      var file = files.OrderByDescending(f => f.LastWriteTime).First();
+
+      string tempPath = Path.Combine(destDirName, file.Name);
+
+      file.CopyTo(tempPath, true);
     }
 
     /// <summary>
