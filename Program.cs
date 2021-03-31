@@ -46,8 +46,6 @@ namespace FileDirectorySystemWatcher
         x.EnableServiceRecovery(recov =>
         {
           recov.OnCrashOnly();
-          // Startar om tjänsten efter 1 min.
-          recov.RestartService(1);
           // Startar om tjänsten efter 2 min.
           recov.RestartService(2);
           // Startar om tjänsten efter 5 min.
